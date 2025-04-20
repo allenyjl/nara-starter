@@ -381,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isFinalImage) {
         changeBackgroundWithSlide(
           backgroundSets[selectedCategory][
-            backgroundSets[selectedCategory].length - 1
+          backgroundSets[selectedCategory].length - 1
           ]
         ).then(() => {
           tasksContainer.classList.add("hidden");
@@ -619,6 +619,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 1. list of encouragement messages
+  const encouragementMessages = [
+    "Great job!",
+    "You’re making progress!",
+    "Keep going!",
+    "Nice work!",
+    "Way to go!",
+    "Keep up the good work!"
+  ];
+
+  // 2. show a bubble near the selected category’s deer
+  function showEncouragementBubble(category) {
+    const area = deerAreas.find((a) => a.category === category);
+    if (!area) return;
+    const msg = encouragementMessages[
+      Math.floor(Math.random() * encouragementMessages.length)
+    ];
+    const bubble = document.createElement("div");
+    bubble.className = "encouragement-bubble";
+    bubble.textContent = msg;
+    // position it just above the deer area
+    const x = area.left + area.width / 2;
+    const y = area.top - 10;
+    bubble.style.left = `${x}px`;
+    bubble.style.top = `${y}px`;
+    document.body.appendChild(bubble);
+    // fade out & remove
+    setTimeout(() => bubble.classList.add("fade-out"), 1500);
+    bubble.addEventListener("transitionend", () => bubble.remove());
+  }
+
+
   function renderTasks(tasks, backgroundIndex, category) {
     const tasksHeader =
       document.getElementById("tasks-header") || document.createElement("div");
@@ -643,17 +675,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const sortedTasks = sortTasksByCompletion(tasks);
 
     sortedTasks.forEach((task, index) => {
+
+
+
+
+
       const taskItem = document.createElement("li");
       taskItem.classList.add("draggable");
       taskItem.innerHTML = `
         <input type="checkbox" ${task.completed ? "checked" : ""} />
-        <div class="task-text" contenteditable="true" placeholder="New task">${
-          task.text
+        <div class="task-text" contenteditable="true" placeholder="New task">${task.text
         }</div>
-        ${
-          task.text && !task.completed
-            ? `<button class="delete-task"></button>`
-            : ""
+        ${task.text && !task.completed
+          ? `<button class="delete-task"></button>`
+          : ""
         }
         <div class="drag-handle">
          <div class="line"></div>
@@ -669,7 +704,9 @@ document.addEventListener("DOMContentLoaded", () => {
       checkbox.addEventListener("change", () => {
         const originalIndex = tasks.indexOf(task);
         tasks[originalIndex].completed = checkbox.checked;
-
+        if (checkbox.checked) {
+          showEncouragementBubble(category);
+        }
         if (tasks[originalIndex].completed) {
           const deleteButton = taskItem.querySelector(".delete-task");
           if (deleteButton) deleteButton.remove();
@@ -949,4 +986,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tasksContainer.classList.remove("hidden");
   }
+  // 1. Define an array of inspirational quotes
+  const quotes = [
+    "“The only way to do great work is to love what you do.” – Steve Jobs",
+    "“Believe you can and you're halfway there.” – Theodore Roosevelt",
+    "“Start where you are. Use what you have. Do what you can.” – Arthur Ashe",
+    "“The future belongs to those who believe in the beauty of their dreams.” – Eleanor Roosevelt",
+    "“You are never too old to set another goal or to dream a new dream.” – C.S. Lewis",
+    "“Keep your face always toward the sunshine—and shadows will fall behind you.” – Walt Whitman"
+  ];
+
+  // 2. Function to pick and render a quote
+  function displayRandomQuote() {
+    const quoteText = quotes[Math.floor(Math.random() * quotes.length)];
+    const overlay = document.createElement("div");
+    overlay.className = "quote-overlay";
+    overlay.textContent = quoteText;
+    document.body.appendChild(overlay);
+  }
+
+  // 3. Call it on load (place near the end of the DOMContentLoaded callback)
+  displayRandomQuote();
 });

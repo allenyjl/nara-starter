@@ -487,4 +487,41 @@ input[type="checkbox"]:checked+.task-text {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     opacity: 0.95;
     animation: welcomeFadeIn 1s ease-out forwards;
-    }
+}
+
+.quote-overlay {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 80%;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 1rem;
+    font-style: italic;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Encouragement Bubble */
+.encouragement-bubble {
+    position: absolute;
+    max-width: 200px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    z-index: 1000;
+}
+
+.encouragement-bubble.fade-out {
+    opacity: 0;
+}
